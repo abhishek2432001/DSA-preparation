@@ -29,14 +29,47 @@ void print_all_subsequence_with_sum_k(int ind,vector<int>ds,int s,int sum,int n,
 
 }
 
+bool print_one_susequence_with_sum_k(int ind,vector<int>ds,int s,int sum,int n,int arr[]){
+	if(ind>=n){
+		if(s==sum) {
+			print_ds(ds);
+		return true;
+		}
+		else return false;
+	}
+
+	ds.push_back(arr[ind]);
+	s+=arr[ind];
+	if (print_one_susequence_with_sum_k(ind+1,ds,s,sum,n,arr)) {
+		return true;
+	}
+	s-=arr[ind];
+	ds.pop_back();
+	if (print_one_susequence_with_sum_k(ind+1,ds,s,sum,n,arr)) return true;
+	return false;
+}
+
+int count_all_subsequence_with_sum_k(int ind,int s,int sum,int n,int arr[]){
+	if(ind>=n){
+		if(s==sum) return 1;
+		else return 0;
+	}
+	s+=arr[ind];
+	int l = count_all_subsequence_with_sum_k(ind+1,s,sum,n,arr);
+	s-=arr[ind];
+	int r = count_all_subsequence_with_sum_k(ind+1,s,sum,n,arr);
+	return l+r;
+
+}
+
 int main(){
-	int n = 3;
-	int arr[] = {3,1,2};
+	int n = 4;
+	int arr[] = {3,1,2,1};
 	vector<int>ds;
 	int ind = 0;
 	int s = 0;
-	int sum = 3;
-	print_all_subsequence_with_sum_k(ind,ds,s,sum,n,arr);
+	int sum = 2;
+	cout<<count_all_subsequence_with_sum_k(ind,s,sum,n,arr);	
 	return 0;
 }
 
